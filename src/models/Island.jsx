@@ -76,7 +76,7 @@ const handlePointerDown = useCallback((e) => {
     setIsRotating(true);
   
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    lastX.current = clientX;
+    lastx.current = clientX;
   }
   
   const handleTouchEnd = (e) => {
@@ -91,10 +91,10 @@ const handlePointerDown = useCallback((e) => {
   
     if (isRotating) {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const delta = (clientX - lastX.current) / viewport.width;
+      const delta = (clientX - lastx.current) / viewport.width;
   
       islandRef.current.rotation.y += delta * 0.01 * Math.PI;
-      lastX.current = clientX;
+      lastx.current = clientX;
       rotationSpeed.current = delta * 0.01 * Math.PI;
     }
   }
