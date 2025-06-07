@@ -66,6 +66,39 @@ const handlePointerDown = useCallback((e) => {
       setIsRotating(false);
     }
   };
+ 
+
+
+// Touch events for mobile devices
+  const handleTouchStart = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setIsRotating(true);
+  
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    lastX.current = clientX;
+  }
+  
+  const handleTouchEnd = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setIsRotating(false);
+  }
+  
+  const handleTouchMove = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  
+    if (isRotating) {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const delta = (clientX - lastX.current) / viewport.width;
+  
+      islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+      lastX.current = clientX;
+      rotationSpeed.current = delta * 0.01 * Math.PI;
+    }
+  }
+
 
   useFrame(() => {
     if (!isRotating) {
@@ -126,12 +159,19 @@ const handlePointerDown = useCallback((e) => {
     Canvas.addEventListener('pointermove', handlePointerMove);
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
+    Canvas.addEventListener('touchstart', handleTouchStart);
+    Canvas.addEventListener('touchend', handleTouchEnd);
+    Canvas.addEventListener('touchmove', handleTouchMove);
     return () => {
       Canvas.removeEventListener('pointerdown', handlePointerDown);
       Canvas.removeEventListener('pointerup', handlePointerUp);
       Canvas.removeEventListener('pointermove', handlePointerMove);
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
+      Canvas.removeEventListener('touchstart', handleTouchStart);
+      Canvas.removeEventListener('touchend', handleTouchEnd);
+      Canvas.removeEventListener('touchmove', handleTouchMove);
+      // Clean up the event listeners to prevent memory leaks
     };
   }, [gl,handlePointerDown,handlePointerUp,handlePointerMove]);
 
