@@ -1,4 +1,4 @@
-{"toolbar" : false,
+{
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
   ]
