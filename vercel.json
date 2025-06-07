@@ -1,9 +1,5 @@
-{
-  "toolbar": false,
+{"toolbar" : false,
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
